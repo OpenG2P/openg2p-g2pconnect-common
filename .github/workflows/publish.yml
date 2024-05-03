@@ -1,12 +1,12 @@
 name: Publish to PyPI
 
 on:
+  push:
+    branches:
+      - "**"
+    tags-ignore:
+      - '**'
   workflow_dispatch:
-    inputs:
-      buildNumber:
-        description: 'Build Number'
-        required: false
-        type: string
 
 jobs:
   publish-to-pypi:
@@ -23,31 +23,6 @@ jobs:
       run: python -m build ./openg2p-g2pconnect-common-lib
     - name: Build distribution Mapper
       run: python -m build ./openg2p-g2pconnect-mapper-lib
-    - name: Add build number to package
-      if: inputs.buildNumber != ''
-      run: |
-        cd openg2p-g2pconnect-common-lib/dist
-        for file in *.whl; do
-          echo $file
-          IFS=- read distribution version rest <<< "$file"
-          mv $file "${distribution}-${version}-${{ inputs.buildNumber }}-${rest}"
-        done
-        for file in *.tar.gz; do
-          echo $file
-          IFS=- read distribution version <<< "$file"
-          mv $file "${distribution}-${version//.tar.gz/-${{ inputs.buildNumber }}}.tar.gz"
-        done
-        cd ../../openg2p-g2pconnect-mapper-lib/dist
-        for file in *.whl; do
-          echo $file
-          IFS=- read distribution version rest <<< "$file"
-          mv $file "${distribution}-${version}-${{ inputs.buildNumber }}-${rest}"
-        done
-        for file in *.tar.gz; do
-          echo $file
-          IFS=- read distribution version <<< "$file"
-          mv $file "${distribution}-${version//.tar.gz/-${{ inputs.buildNumber }}}.tar.gz"
-        done
     - name: Publish Common
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
