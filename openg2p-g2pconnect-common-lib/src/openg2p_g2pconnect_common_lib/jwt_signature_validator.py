@@ -11,7 +11,7 @@ from .config import Settings
 from .oauth_token import OAuthTokenService
 from .schemas import DomainEnum
 
-_config = Settings.get_config()
+_config = Settings.get_config(strict=False)
 _logger = logging.getLogger(_config.logging_default_logger_name)
 
 
