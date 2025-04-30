@@ -7,6 +7,7 @@ from .async_schemas import (
     AsyncResponseStatusReasonCodeEnum,
 )
 from .requests import Request, RequestHeader
+from .security import DomainEnum
 from .status_codes import StatusEnum
 from .sync_schemas import (
     SyncResponse,

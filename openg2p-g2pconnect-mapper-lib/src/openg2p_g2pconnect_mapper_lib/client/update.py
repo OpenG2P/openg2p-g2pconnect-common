@@ -11,14 +11,18 @@ _logger = logging.getLogger("mapper_client_update")
 
 class MapperUpdateClient(BaseService):
     async def update_request(
-        self, update_request: UpdateRequest, update_url: str = None, timeout=60
+        self,
+        update_request: UpdateRequest,
+        headers: dict,
+        update_url: str = None,
+        timeout=60,
     ) -> UpdateResponse:
         try:
             client = httpx.AsyncClient()
             res = await client.post(
                 update_url,
                 content=update_request.model_dump_json(),
-                headers={"content-type": "application/json"},
+                headers=headers,
                 timeout=timeout,
             )
             await client.aclose()

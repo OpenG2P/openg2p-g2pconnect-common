@@ -15,6 +15,10 @@ class SyncResponseStatusReasonCodeEnum(Enum):
     rjct_total_count_invalid = "rjct.total_count.invalid"
     rjct_total_count_limit_exceeded = "rjct.total_count.limit_exceeded"
     rjct_errors_too_many = "rjct.errors.too_many"
+    rjct_jwt_invalid = "rjct.jwt.invalid"
+    rjct_file_size_exceeded = "rjct.file.size.exceeded"
+    rjct_file_type_invalid = "rjct.file.type.invalid"
+    rjct_virus_check_failed = "rjct.virus.check.failed"
 
 
 class SyncResponseHeader(BaseModel):
@@ -36,6 +40,5 @@ class SyncResponseHeader(BaseModel):
 
 
 class SyncResponse(BaseModel):
-    signature: Optional[str] = None
     header: SyncResponseHeader
     message: object

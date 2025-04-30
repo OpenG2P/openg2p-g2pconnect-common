@@ -11,14 +11,18 @@ _logger = logging.getLogger("mapper_client_unlink")
 
 class MapperUnlinkClient(BaseService):
     async def unlink_request(
-        self, unlink_request: UnlinkRequest, unlink_url: str = None, timeout=60
+        self,
+        unlink_request: UnlinkRequest,
+        headers: dict,
+        unlink_url: str = None,
+        timeout=60,
     ) -> UnlinkResponse:
         try:
             client = httpx.AsyncClient()
             res = await client.post(
                 unlink_url,
                 content=unlink_request.model_dump_json(),
-                headers={"content-type": "application/json"},
+                headers=headers,
                 timeout=timeout,
             )
             await client.aclose()

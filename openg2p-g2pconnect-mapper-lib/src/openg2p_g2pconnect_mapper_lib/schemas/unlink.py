@@ -17,7 +17,7 @@ class UnlinkStatusReasonCode(Enum):
 
 class SingleUnlinkRequest(BaseModel):
     reference_id: str
-    timestamp: datetime
+    timestamp: str
     id: str
     fa: Optional[str] = None
     name: Optional[str] = None

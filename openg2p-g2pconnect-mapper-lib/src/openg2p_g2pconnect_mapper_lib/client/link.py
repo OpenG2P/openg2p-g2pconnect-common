@@ -11,14 +11,14 @@ _logger = logging.getLogger("mapper_client_link")
 
 class MapperLinkClient(BaseService):
     async def link_request(
-        self, link_request: LinkRequest, link_url: str = None, timeout=60
+        self, link_request: LinkRequest, headers: dict, link_url: str = None, timeout=60
     ) -> LinkResponse:
         try:
             client = httpx.AsyncClient()
             res = await client.post(
                 link_url,
                 content=link_request.model_dump_json(),
-                headers={"content-type": "application/json"},
+                headers=headers,
                 timeout=timeout,
             )
             await client.aclose()

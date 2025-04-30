@@ -17,7 +17,7 @@ class UpdateStatusReasonCode(Enum):
 
 class SingleUpdateRequest(BaseModel):
     reference_id: str
-    timestamp: datetime
+    timestamp: str
     id: str
     fa: str
     name: Optional[str] = None

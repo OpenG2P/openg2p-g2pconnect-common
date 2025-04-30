@@ -11,14 +11,18 @@ _logger = logging.getLogger("mapper_client_resolve")
 
 class MapperResolveClient(BaseService):
     async def resolve_request(
-        self, resolve_request: ResolveRequest, resolve_url: str = None, timeout=60
+        self,
+        resolve_request: ResolveRequest,
+        headers: dict,
+        resolve_url: str = None,
+        timeout=60,
     ) -> ResolveResponse:
         try:
             client = httpx.AsyncClient()
             res = await client.post(
                 resolve_url,
                 content=resolve_request.model_dump_json(),
-                headers={"content-type": "application/json"},
+                headers=headers,
                 timeout=timeout,
             )
             await client.aclose()

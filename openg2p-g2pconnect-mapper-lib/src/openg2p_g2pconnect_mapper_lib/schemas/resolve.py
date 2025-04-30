@@ -29,7 +29,7 @@ class ResolveStatusReasonCode(Enum):
 
 class SingleResolveRequest(BaseModel):
     reference_id: str
-    timestamp: datetime
+    timestamp: str
     fa: Optional[str] = ""
     id: Optional[str] = ""
     name: Optional[str] = None

@@ -23,6 +23,7 @@ class AsyncResponseStatusReasonCodeEnum(Enum):
     rjct_total_count_invalid = "rjct.total_count.invalid"
     rjct_total_count_limit_exceeded = "rjct.total_count.limit_exceeded"
     rjct_errors_too_many = "rjct.errors.too_many"
+    rjct_jwt_invalid = "rjct.jwt.invalid"
 
 
 class AsyncResponseMessage(BaseModel):
@@ -55,6 +56,5 @@ class AsyncCallbackRequestHeader(BaseModel):
 
 
 class AsyncCallbackRequest(BaseModel):
-    signature: Optional[str] = None
     header: AsyncCallbackRequestHeader
     message: Optional[object] = None

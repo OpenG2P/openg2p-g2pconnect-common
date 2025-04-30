@@ -19,6 +19,5 @@ class RequestHeader(BaseModel):
 
 
 class Request(BaseModel):
-    signature: Optional[str] = None
     header: RequestHeader
     message: object

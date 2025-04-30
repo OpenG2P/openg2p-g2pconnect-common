@@ -8,7 +8,7 @@ from pydantic import BaseModel
 
 class SingleLinkRequest(BaseModel):
     reference_id: str
-    timestamp: datetime
+    timestamp: str
     id: str
     fa: str
     name: Optional[str] = None

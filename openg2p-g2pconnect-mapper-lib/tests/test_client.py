@@ -113,7 +113,7 @@ def setup_link():
             link_request=[
                 SingleLinkRequest(
                     reference_id="test_ref",
-                    timestamp=datetime.now(),
+                    timestamp=str(datetime.now()),
                     id="test_id",
                     fa="test_fa",
                 )
@@ -133,8 +133,11 @@ async def test_link_request_successful(setup_link):
     ) as mock_post:
         mock_post.return_value.json = MagicMock(return_value=response_json)
         mapper_service = MapperLinkClient()
+        headers = {
+            "Content-Type": "application/json",
+        }
         link_response = await mapper_service.link_request(
-            mock_link_request, link_url="mock_url"
+            mock_link_request, link_url="mock_url", headers=headers
         )
 
         assert link_response.header.message_id == mock_link_response.header.message_id
@@ -206,7 +209,7 @@ def setup_update():
             update_request=[
                 SingleUpdateRequest(
                     reference_id="test_ref",
-                    timestamp=datetime.now(),
+                    timestamp=str(datetime.now()),
                     id="test_id",
                     fa="test_fa",
                 )
@@ -225,8 +228,11 @@ async def test_update_request_successful(setup_update):
         mock_post.return_value.json = MagicMock(return_value=response_json)
 
         mapper_service = MapperUpdateClient()
+        headers = {
+            "Content-Type": "application/json",
+        }
         update_response = await mapper_service.update_request(
-            mock_update_request, update_url="mock_url"
+            mock_update_request, update_url="mock_url", headers=headers
         )
         assert (
             update_response.header.message_id == mock_update_response.header.message_id
@@ -299,7 +305,7 @@ def setup_resolve():
             resolve_request=[
                 SingleResolveRequest(
                     reference_id="test_ref",
-                    timestamp=datetime.now(),
+                    timestamp=str(datetime.now()),
                     id="test_id",
                     fa="test_fa",
                 )
@@ -318,8 +324,11 @@ async def test_resolve_request_successful(setup_resolve):
         mock_post.return_value.json = MagicMock(return_value=response_json)
 
         mapper_service = MapperResolveClient()
+        headers = {
+            "Content-Type": "application/json",
+        }
         resolve_response = await mapper_service.resolve_request(
-            mock_resolve_request, resolve_url="mock_url"
+            mock_resolve_request, resolve_url="mock_url", headers=headers
         )
         assert (
             resolve_response.header.message_id
@@ -393,7 +402,7 @@ def setup_unlink():
             unlink_request=[
                 SingleUnlinkRequest(
                     reference_id="test_ref",
-                    timestamp=datetime.now(),
+                    timestamp=str(datetime.now()),
                     id="test_id",
                     fa="test_fa",
                 )
@@ -412,8 +421,11 @@ async def test_unlink_request_successful(setup_unlink):
         mock_post.return_value.json = MagicMock(return_value=response_json)
 
         mapper_service = MapperUnlinkClient()
+        headers = {
+            "Content-Type": "application/json",
+        }
         unlink_response = await mapper_service.unlink_request(
-            mock_unlink_request, unlink_url="mock_url"
+            mock_unlink_request, unlink_url="mock_url", headers=headers
         )
         assert (
             unlink_response.header.message_id == mock_unlink_response.header.message_id
