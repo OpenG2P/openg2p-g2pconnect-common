@@ -1,4 +1,6 @@
 from openg2p_fastapi_common.app import Initializer as BaseInitializer
+from openg2p_fastapi_common.utils.crypto import KeymanagerCryptoHelper
+from openg2p_g2pconnect_common_lib.jwt_validation_helper import JWTValidationHelper
 
 from .client import (
     MapperLinkClient,
@@ -14,3 +16,5 @@ class Initializer(BaseInitializer):
         MapperUpdateClient()
         MapperUnlinkClient()
         MapperResolveClient()
+        JWTValidationHelper()
+        KeymanagerCryptoHelper()

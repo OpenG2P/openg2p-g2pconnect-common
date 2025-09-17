@@ -1,3 +1,3 @@
 pytest-asyncio
 pytest-cov
-openg2p-fastapi-common==1.0.0
+git+https://github.com/openg2p/openg2p-fastapi-common@1.1#subdirectory=openg2p-fastapi-common
