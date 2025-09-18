@@ -2,6 +2,8 @@ from datetime import datetime
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
+from openg2p_fastapi_common.utils.crypto import CryptoHelper
+from openg2p_g2pconnect_common_lib.jwt_validation_helper import JWTValidationHelper
 from openg2p_g2pconnect_common_lib.schemas import StatusEnum
 from openg2p_g2pconnect_common_lib.schemas.requests import RequestHeader
 from openg2p_g2pconnect_common_lib.schemas.sync_schemas import SyncResponseHeader
@@ -120,6 +122,8 @@ def setup_link():
             ],
         ),
     )
+    JWTValidationHelper()
+    CryptoHelper()
     return mock_link_response, mock_link_request, response_json
 
 
@@ -127,18 +131,17 @@ def setup_link():
 async def test_link_request_successful(setup_link):
     mock_link_response, mock_link_request, response_json = setup_link
 
-    with patch(
-        "openg2p_g2pconnect_mapper_lib.client.link.httpx.AsyncClient.post",
-        new_callable=AsyncMock,
-    ) as mock_post:
+    with (
+        patch(
+            "openg2p_g2pconnect_mapper_lib.client.link.httpx.AsyncClient.post", new_callable=AsyncMock
+        ) as mock_post,
+        patch("openg2p_fastapi_common.utils.crypto.CryptoHelper.create_jwt_token") as mock_create_jwt,
+    ):
         mock_post.return_value.json = MagicMock(return_value=response_json)
+        mock_create_jwt.return_value = "mock_jwt"
+
         mapper_service = MapperLinkClient()
-        headers = {
-            "Content-Type": "application/json",
-        }
-        link_response = await mapper_service.link_request(
-            mock_link_request, link_url="mock_url", headers=headers
-        )
+        link_response = await mapper_service.link_request(mock_link_request)
 
         assert link_response.header.message_id == mock_link_response.header.message_id
         assert isinstance(link_response, LinkResponse)
@@ -222,21 +225,18 @@ def setup_update():
 @pytest.mark.asyncio
 async def test_update_request_successful(setup_update):
     mock_update_response, mock_update_request, response_json = setup_update
-    with patch(
-        "openg2p_g2pconnect_mapper_lib.client.update.httpx.AsyncClient.post"
-    ) as mock_post:
+    with (
+        patch(
+            "openg2p_g2pconnect_mapper_lib.client.link.httpx.AsyncClient.post", new_callable=AsyncMock
+        ) as mock_post,
+        patch("openg2p_fastapi_common.utils.crypto.CryptoHelper.create_jwt_token") as mock_create_jwt,
+    ):
         mock_post.return_value.json = MagicMock(return_value=response_json)
+        mock_create_jwt.return_value = "mock_jwt"
 
         mapper_service = MapperUpdateClient()
-        headers = {
-            "Content-Type": "application/json",
-        }
-        update_response = await mapper_service.update_request(
-            mock_update_request, update_url="mock_url", headers=headers
-        )
-        assert (
-            update_response.header.message_id == mock_update_response.header.message_id
-        )
+        update_response = await mapper_service.update_request(mock_update_request)
+        assert update_response.header.message_id == mock_update_response.header.message_id
         assert isinstance(update_response, UpdateResponse)
 
 
@@ -318,22 +318,18 @@ def setup_resolve():
 @pytest.mark.asyncio
 async def test_resolve_request_successful(setup_resolve):
     mock_resolve_response, mock_resolve_request, response_json = setup_resolve
-    with patch(
-        "openg2p_g2pconnect_mapper_lib.client.resolve.httpx.AsyncClient.post"
-    ) as mock_post:
+    with (
+        patch(
+            "openg2p_g2pconnect_mapper_lib.client.link.httpx.AsyncClient.post", new_callable=AsyncMock
+        ) as mock_post,
+        patch("openg2p_fastapi_common.utils.crypto.CryptoHelper.create_jwt_token") as mock_create_jwt,
+    ):
         mock_post.return_value.json = MagicMock(return_value=response_json)
+        mock_create_jwt.return_value = "mock_jwt"
 
         mapper_service = MapperResolveClient()
-        headers = {
-            "Content-Type": "application/json",
-        }
-        resolve_response = await mapper_service.resolve_request(
-            mock_resolve_request, resolve_url="mock_url", headers=headers
-        )
-        assert (
-            resolve_response.header.message_id
-            == mock_resolve_response.header.message_id
-        )
+        resolve_response = await mapper_service.resolve_request(mock_resolve_request)
+        assert resolve_response.header.message_id == mock_resolve_response.header.message_id
         assert isinstance(resolve_response, ResolveResponse)
 
 
@@ -415,19 +411,16 @@ def setup_unlink():
 @pytest.mark.asyncio
 async def test_unlink_request_successful(setup_unlink):
     mock_unlink_response, mock_unlink_request, response_json = setup_unlink
-    with patch(
-        "openg2p_g2pconnect_mapper_lib.client.unlink.httpx.AsyncClient.post"
-    ) as mock_post:
+    with (
+        patch(
+            "openg2p_g2pconnect_mapper_lib.client.link.httpx.AsyncClient.post", new_callable=AsyncMock
+        ) as mock_post,
+        patch("openg2p_fastapi_common.utils.crypto.CryptoHelper.create_jwt_token") as mock_create_jwt,
+    ):
         mock_post.return_value.json = MagicMock(return_value=response_json)
+        mock_create_jwt.return_value = "mock_jwt"
 
         mapper_service = MapperUnlinkClient()
-        headers = {
-            "Content-Type": "application/json",
-        }
-        unlink_response = await mapper_service.unlink_request(
-            mock_unlink_request, unlink_url="mock_url", headers=headers
-        )
-        assert (
-            unlink_response.header.message_id == mock_unlink_response.header.message_id
-        )
+        unlink_response = await mapper_service.unlink_request(mock_unlink_request)
+        assert unlink_response.header.message_id == mock_unlink_response.header.message_id
         assert isinstance(unlink_response, UnlinkResponse)
